@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const pool = require('../config/db');
+const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 const SALT_ROUNDS = 10;
@@ -33,5 +34,43 @@ router.post('/register', async (req, res) => {
     }
   }
 });
+
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password required' });
+  }
+
+  try {
+    const result = await pool.query(
+      'SELECT id, email, role, password_hash FROM users WHERE email = $1',
+      [email.toLowerCase()]
+    );
+    const user = result.rows[0];
+    const valid = user && (await bcrypt.compare(password, user.password_hash));
+
+    if (!valid) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    const token = jwt.sign(
+      { sub: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+    res.status(200).json({ token });
+  } catch (err) {
+    console.error('Login failed:', err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+const requireAuth = require('../middleware/auth');
+
+router.get('/me', requireAuth, (req, res) => {
+  res.status(200).json({ id: req.user.sub, role: req.user.role });
+});
+
 
 module.exports = router;
