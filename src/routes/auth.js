@@ -66,5 +66,11 @@ router.post('/login', async (req, res) => {
   }
 });
 
+const requireAuth = require('../middleware/auth');
+
+router.get('/me', requireAuth, (req, res) => {
+  res.status(200).json({ id: req.user.sub, role: req.user.role });
+});
+
 
 module.exports = router;
