@@ -1,6 +1,8 @@
 const request = require('supertest');
 const app = require('../src/app');
 const pool = require('../src/config/db');
+const redis = require('../src/config/redis');
+
 
 describe('POST /auth/register', () => {
   const email = `test-${Date.now()}@example.com`;
@@ -9,6 +11,7 @@ describe('POST /auth/register', () => {
   afterAll(async () => {
     await pool.query('DELETE FROM users WHERE email = $1', [email]);
     await pool.end();
+    await redis.quit();
   });
 
   it('registers a new user and hides the password hash', async () => {

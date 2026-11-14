@@ -16,3 +16,9 @@ describe('GET /health', () => {
     expect(typeof res.body.timestamp).toBe('string');
   });
 });
+
+const redis = require('../src/config/redis');
+
+afterAll(async () => {
+  await redis.quit();
+});
