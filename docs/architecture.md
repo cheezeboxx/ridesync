@@ -16,3 +16,9 @@ Clients
  ┌─┴────────┐
 Redis    Postgres
 ```
+
+## Components
+- **Nginx:** distributes incoming requests across API instances
+- **Node.js API:** stateless, so instances can be added or removed freely
+- **Redis:** caching, geospatial driver lookup, rate limiting
+- **Postgres:** durable storage for users and rides
