@@ -22,3 +22,9 @@ Redis    Postgres
 - **Node.js API:** stateless, so instances can be added or removed freely
 - **Redis:** caching, geospatial driver lookup, rate limiting
 - **Postgres:** durable storage for users and rides
+
+
+## Design decisions
+- APIs are stateless so they scale horizontally
+- Hot data (driver locations) lives in Redis; durable data lives in Postgres
+- Rate limiting is shared through Redis so limits hold across all instances
