@@ -1,0 +1,27 @@
+{
+  "name": "ridesync",
+  "version": "1.0.0",
+  "description": "A scalable ride-matching backend that finds nearby drivers with Redis GEO, protects itself with rate limiting, and scales horizontally behind an Nginx load balancer.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cheezeboxx/ridesync.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cheezeboxx/ridesync/issues"
+  },
+  "homepage": "https://github.com/cheezeboxx/ridesync#readme",
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
