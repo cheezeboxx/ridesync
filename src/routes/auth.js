@@ -25,7 +25,8 @@ router.post('/register', async (req, res) => {
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error('Register failed:', err);
-    res.status(500).json({ error: 'Something went wrong' });
+    if(err.code === '23505') res.status(409).json({ error: 'Data already exists' });
+    else res.status(500).json({ error: 'Something went wrong' });
   }
 });
 
