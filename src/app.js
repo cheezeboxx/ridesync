@@ -1,5 +1,14 @@
 const express = require('express');
 
+const os = require('os');
+
+app.set('trust proxy', 1);
+
+app.use((req, res, next) => {
+  res.set('X-Served-By', os.hostname());
+  next();
+});
+
 const app = express();
 const pool = require('./config/db')
 const redis = require('./config/redis');
