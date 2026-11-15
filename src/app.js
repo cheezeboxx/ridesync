@@ -6,6 +6,7 @@ const redis = require('./config/redis');
 
 app.use(express.json());
 app.use('/auth', require('./routes/auth'));
+app.use('/users', require('./routes/users'));
 
 app.get('/health', (req, res) => {
   res.status(200).json({
