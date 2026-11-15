@@ -35,7 +35,15 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.post('/login', async (req, res) => {
+const rateLimit = require('../middleware/rateLimit');
+
+const loginLimiter = rateLimit({
+  windowSeconds: 60,
+  maxRequests: Number(process.env.LOGIN_RATE_LIMIT_MAX) || 5,
+  keyPrefix: 'rl:login',
+});
+
+router.post('/login', loginLimiter, async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
